@@ -43,7 +43,7 @@ module ActsAsOrderedTree
 
           name = __callback_runner_name(nil, kind)
           unless object.respond_to?(name, true)
-            str = object.send("_#{kind}_callbacks").compile(nil, object)
+            str = object.send(:"_#{kind}_callbacks").compile(nil, object)
             class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
               def #{name}() #{str} end
               protected :#{name}
