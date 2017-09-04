@@ -13,7 +13,7 @@ module ActsAsOrderedTree
           children_counter_cache?
 
       # when default value for counter_cache is absent we should set it manually
-      before_create "self.#{children_counter_cache_column} = 0" if children_counter_cache?
+      before_create :"self.#{children_counter_cache_column} = 0" if children_counter_cache?
     end
 
     module ClassMethods
@@ -51,12 +51,12 @@ module ActsAsOrderedTree
         end
 
         after_save :move_to_root, :unless => [position_column, parent_column]
-        after_save 'move_to_child_of(parent)', :if => parent_column, :unless => position_column
-        after_save "move_to_child_with_index(parent, #{position_column})",
+        after_save :'move_to_child_of(parent)', :if => parent_column, :unless => position_column
+        after_save :"move_to_child_with_index(parent, #{position_column})",
                    :if => "#{position_column} && (#{position_column}_changed? || #{parent_column}_changed?)"
 
         before_destroy :flush_descendants
-        after_destroy "decrement_lower_positions(#{parent_column}_was, #{position_column}_was)", :if => position_column
+        after_destroy :"decrement_lower_positions(#{parent_column}_was, #{position_column}_was)", :if => position_column
       end
 
       def setup_ordered_tree_validations #:nodoc:
