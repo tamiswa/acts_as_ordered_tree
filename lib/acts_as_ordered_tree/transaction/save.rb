@@ -7,10 +7,10 @@ module ActsAsOrderedTree
     class Save < Base
       attr_reader :to
 
-      before 'to.lock!'
+      before :'to.lock!'
       before :set_scope!, :if => 'to.parent?'
       before :push_to_bottom, :if => :push_to_bottom?
-      before 'to.position = 1', :if => 'to.position <= 0'
+      before :'to.position = 1', :if => 'to.position <= 0'
 
       around :copy_attributes
 
