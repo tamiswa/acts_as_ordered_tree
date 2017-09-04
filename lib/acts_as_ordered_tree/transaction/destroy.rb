@@ -13,8 +13,8 @@ module ActsAsOrderedTree
       before 'trigger_callback(:before_remove, from.parent)'
 
       after :decrement_lower_positions
-      after 'from.decrement_counter'
-      after 'trigger_callback(:after_remove, from.parent)'
+      after :'from.decrement_counter'
+      after :'trigger_callback(:after_remove, from.parent)'
 
       finalize
 

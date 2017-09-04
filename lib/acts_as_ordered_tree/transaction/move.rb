@@ -5,8 +5,8 @@ require 'acts_as_ordered_tree/transaction/update'
 module ActsAsOrderedTree
   module Transaction
     class Move < Update
-      before 'trigger_callback(:before_remove, from.parent)'
-      before 'trigger_callback(:before_add, to.parent)'
+      before :'trigger_callback(:before_remove, from.parent)'
+      before :'trigger_callback(:before_add, to.parent)'
 
       after :update_descendants_depth, :if => [
           'transition.movement?',
@@ -15,9 +15,9 @@ module ActsAsOrderedTree
           'record.children.size > 0'
       ]
 
-      after 'trigger_callback(:after_add, to.parent)'
-      after 'trigger_callback(:after_remove, from.parent)'
-      after 'transition.update_counters'
+      after :'trigger_callback(:after_add, to.parent)'
+      after :'trigger_callback(:after_remove, from.parent)'
+      after :'transition.update_counters'
 
       finalize
 
