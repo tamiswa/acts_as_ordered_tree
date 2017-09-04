@@ -74,7 +74,7 @@ module ActsAsOrderedTree
       super!
       @callbacks.each { |callback| callback.call }
     end
-    prepend(ActsAsOrderedTree::PerseveringTransaction)
+    self.class.prepend(ActsAsOrderedTree::PerseveringTransaction::State)
 
     private
     def pause
