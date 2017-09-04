@@ -10,7 +10,7 @@ module ActsAsOrderedTree
 
       attr_reader :from
 
-      before 'trigger_callback(:before_remove, from.parent)'
+      before :'trigger_callback(:before_remove, from.parent)'
 
       after :decrement_lower_positions
       after :'from.decrement_counter'
