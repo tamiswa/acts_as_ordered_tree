@@ -70,11 +70,11 @@ module ActsAsOrderedTree
 
     # Marks this transaction as committed and executes its commit callbacks
     # @api private
-    def committed_with_callbacks!
-      committed_without_callbacks!
+    def committed!
+      super!
       @callbacks.each { |callback| callback.call }
     end
-    alias_method_chain :committed!, :callbacks
+    self.class.prepend(ActsAsOrderedTree::PerseveringTransaction)
 
     private
     def pause
