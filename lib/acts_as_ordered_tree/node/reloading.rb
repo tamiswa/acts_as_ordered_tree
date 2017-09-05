@@ -32,6 +32,23 @@ module ActsAsOrderedTree
           record
         end
 
+        Compatibility.version '<= 5.0.0' do
+        # Reloads node's attributes related to tree structure
+        def reload(options = {})
+          fresh_object = reload_scope(options).find(record.id)
+
+          fresh_object.attributes.each_pair do |key, value|
+            record[key] = value
+          end
+
+          record.instance_eval do
+            # @attributes.update(fresh_object.instance_variable_get(:@attributes))
+            @attributes_cache = {}
+          end
+
+          record
+        end
+
         private
         def reload_scope(options)
           options ||= {}
