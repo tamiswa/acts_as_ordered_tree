@@ -7,10 +7,10 @@ module ActsAsOrderedTree
     class Save < Base
       attr_reader :to
 
-      before :"to.lock!"
-      before :set_scope!, :if => :"to.parent?"
+      before :to_lock!
+      before :set_scope!, :if => :to_parent?
       before :push_to_bottom, :if => :push_to_bottom?
-      before :"to.position = 1", :if => :"to.position <= 0"
+      before :default_position, :if => :invalid_position?
 
       around :copy_attributes
 
@@ -22,6 +22,23 @@ module ActsAsOrderedTree
       end
 
       protected
+
+      def to_lock!
+       to.lock!
+      end
+
+      def to_parent?
+       to.parent?
+      end
+
+      def default_position
+       to.position = 1
+      end
+
+      def invalid_position?
+       to.position <= 0
+      end
+
       # Copies parent_id, position and depth from destination to record
       def copy_attributes
         record.parent = to.parent

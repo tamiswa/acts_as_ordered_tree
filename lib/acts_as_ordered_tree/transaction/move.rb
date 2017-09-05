@@ -5,23 +5,39 @@ require 'acts_as_ordered_tree/transaction/update'
 module ActsAsOrderedTree
   module Transaction
     class Move < Update
-      before :'trigger_callback(:before_remove, from.parent)'
-      before :'trigger_callback(:before_add, to.parent)'
+      before :trigger_callback_before_remove
+      before :trigger_callback_before_add
 
-      after :update_descendants_depth, :if => [
-          'transition.movement?',
-          'tree.columns.depth?',
-          'transition.level_changed?',
-          'record.children.size > 0'
-      ]
+      after :update_descendants_depth, :if => :should_update_descendants_depth?
 
-      after :'trigger_callback(:after_add, to.parent)'
-      after :'trigger_callback(:after_remove, from.parent)'
+      after :trigger_callback_after_add
+      after :trigger_callback_after_remove
       after :'transition.update_counters'
 
       finalize
 
       private
+
+      def should_update_descendants_depth?
+        transition.movement? && tree.columns.depth? && transition.level_changed? && record.children.size > 0
+      end
+
+      def trigger_callback_before_add
+        trigger_callback(:before_add, from.parent)
+      end
+
+      def trigger_callback_before_remove
+        trigger_callback(:before_remove, from.parent)
+      end
+      
+      def trigger_callback_after_add
+        trigger_callback(:after_add, to.parent)
+      end
+      
+      def trigger_callback_after_remove
+        trigger_callback(:after_remove, to.parent)
+      end
+      
       def update_values
         updates = Hash[
             position => position_value,

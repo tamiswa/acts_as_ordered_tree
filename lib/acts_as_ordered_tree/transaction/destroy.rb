@@ -10,11 +10,11 @@ module ActsAsOrderedTree
 
       attr_reader :from
 
-      before :'trigger_callback(:before_remove, from.parent)'
+      before :trigger_callback_before_remove
 
       after :decrement_lower_positions
-      after :'from.decrement_counter'
-      after :'trigger_callback(:after_remove, from.parent)'
+      after :decrement_counter
+      after :trigger_callback_after_remove
 
       finalize
 
@@ -26,6 +26,19 @@ module ActsAsOrderedTree
       end
 
       private
+
+      def decrement_counter
+        from.decrement_counter
+      end
+      
+      def trigger_callback_before_remove
+        trigger_callback(:before_remove, from.parent)
+      end
+
+      def trigger_callback_after_remove
+        trigger_callback(:after_remove, from.parent)
+      end
+
       def decrement_lower_positions
         from.lower.update_all set position => position - 1
       end
