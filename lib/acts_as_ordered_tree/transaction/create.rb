@@ -10,7 +10,7 @@ module ActsAsOrderedTree
     class Create < Save
       include DSL
 
-      before :push_to_bottom_after_commit, :if => :push_to_bottom_or_root
+      before :push_to_bottom_after_commit, :if => :push_to_bottom_or_root?
       before :set_counter_cache, :if => :tree_counter_cache?
       before :increment_lower_positions, :unless => :push_to_bottom?
       before :trigger_callback_before_add
