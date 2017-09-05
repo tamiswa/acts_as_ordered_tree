@@ -5,6 +5,7 @@ require 'acts_as_ordered_tree/compatibility'
 module ActsAsOrderedTree
   class Node
     module Reloading
+
       Compatibility.version '< 4.0.0' do
         # Reloads node's attributes related to tree structure
         def reload(options = {})
@@ -12,7 +13,7 @@ module ActsAsOrderedTree
         end
       end
 
-      Compatibility.version '>= 4.0.0' do
+      Compatibility.version '< 5.0.0' do
         # Reloads node's attributes related to tree structure
         def reload(options = {})
           record.association_cache.delete(:parent)
@@ -31,8 +32,9 @@ module ActsAsOrderedTree
 
           record
         end
+      end
 
-        Compatibility.version '<= 5.0.0' do
+      Compatibility.version '>= 5.0.0' do
         # Reloads node's attributes related to tree structure
         def reload(options = {})
           fresh_object = reload_scope(options).find(record.id)
