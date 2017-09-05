@@ -8,7 +8,7 @@ module ActsAsOrderedTree
       #
       # @api private
       def state_method(state)
-        define_method "#{state}!" do |*|
+        define_method "#{state}!(*)" do |*|
           @state = state
         end
 
@@ -75,7 +75,6 @@ module ActsAsOrderedTree
     # Marks this transaction as committed and executes its commit callbacks
     # @api private
     def committed!(*)
-      super
       @callbacks.each { |callback| callback.call }
     end
     self.class.prepend(ActsAsOrderedTree::PerseveringTransaction::State)
