@@ -75,6 +75,7 @@ module ActsAsOrderedTree
     # Marks this transaction as committed and executes its commit callbacks
     # @api private
     def committed!(*)
+      super
       @callbacks.each { |callback| callback.call }
     end
     self.class.prepend(ActsAsOrderedTree::PerseveringTransaction::State)
