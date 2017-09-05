@@ -68,7 +68,7 @@ module ActsAsOrderedTree
       true
     end
     
-    def before_committed!(*)
+    def before_committed!
       # no-op
     end
 
