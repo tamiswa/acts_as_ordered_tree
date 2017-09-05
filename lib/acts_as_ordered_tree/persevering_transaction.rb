@@ -67,6 +67,10 @@ module ActsAsOrderedTree
     def has_transactional_callbacks?
       true
     end
+    
+    def before_committed!(*)
+      # no-op
+    end
 
     # Marks this transaction as committed and executes its commit callbacks
     # @api private
