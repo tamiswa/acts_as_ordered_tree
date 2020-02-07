@@ -12,11 +12,15 @@ module ActsAsOrderedTree
 
       after :trigger_callback_after_add
       after :trigger_callback_after_remove
-      after :'transition.update_counters'
+      after :'transition_update_counters'
 
       finalize
 
       private
+
+      def transition_update_counters
+        transition.update_counters
+      end
 
       def should_update_descendants_depth?
         transition.movement? && tree.columns.depth? && transition.level_changed? && record.children.size > 0
