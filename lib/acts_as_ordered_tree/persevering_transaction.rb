@@ -8,9 +8,9 @@ module ActsAsOrderedTree
       #
       # @api private
       def state_method(state)
-        define_method "#{state}!" do |*|
+        define_method "#{state}!" do |*args|
           @state = state
-          super
+          super(*args)
         end
 
         define_method "#{state}?" do
